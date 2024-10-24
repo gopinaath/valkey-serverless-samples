@@ -7,16 +7,11 @@ Resources:
     Properties:
       ServerlessCacheName: ec-valkey-serverless
       Engine: valkey
-      CacheUsageLimits:
-        DataStorage:
-          Maximum: 1000  # Maximum storage in GB
-        ECPU:
-          Maximum: 100   # Maximum ECPU units
       DailySnapshotTime: '04:00'
       SnapshotRetentionLimit: 7
       Tags:
-        - Key: Environment
-          Value: Production
+        - Key: Project
+          Value: valkey-test
 
 Outputs:
   ServerlessCacheId:
