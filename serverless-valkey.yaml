@@ -20,4 +20,4 @@ Outputs:
   
   ServerlessCacheEndpoint:
     Description: Endpoint for the serverless cache
-    Value: !GetAtt ServerlessCache.EndpointAddress
+    Value: !GetAtt ServerlessCache.Endpoint.Address
