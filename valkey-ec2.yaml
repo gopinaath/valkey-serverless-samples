@@ -4,11 +4,11 @@ Description: 'CloudFormation template for EC2 nano instance with Valkey installa
 Parameters:
   VpcId:
     Type: AWS::EC2::VPC::Id
-    Description: Select an existing VPC
+    Description: Select a VPC for the security group
 
   SubnetId:
     Type: AWS::EC2::Subnet::Id
-    Description: Select a subnet within the selected VPC
+    Description: Select a subnet for the EC2 instance
 
   KeyName:
     Type: AWS::EC2::KeyPair::KeyName
@@ -30,9 +30,9 @@ Resources:
       GroupDescription: Allow all traffic from MyIP
       VpcId: !Ref VpcId
       SecurityGroupIngress:
-        - IpProtocol: -1  # Allows all traffic
-          FromPort: -1    # All ports
-          ToPort: -1      # All ports
+        - IpProtocol: -1
+          FromPort: -1
+          ToPort: -1
           CidrIp: !Ref MyIP
       Tags:
         - Key: Name
@@ -45,7 +45,7 @@ Resources:
       SecurityGroupIds: 
         - !Ref EC2SecurityGroup
       KeyName: !Ref KeyName
-      ImageId: ami-0440d3b780d96b29d  # Amazon Linux 2 AMI in us-east-1
+      ImageId: ami-093467ec28ae4fe03  # Amazon Linux 2 AMI in us-west-2
       SubnetId: !Ref SubnetId
       UserData:
         Fn::Base64: !Sub |
