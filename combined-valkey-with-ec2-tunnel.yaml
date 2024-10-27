@@ -6,7 +6,7 @@ Parameters:
     Type: AWS::EC2::VPC::Id
     Description: Select a VPC for the security group
     
-  SubnetId:
+  Ec2SubnetId:
     Type: AWS::EC2::Subnet::Id
     Description: Select a subnet for the EC2 instance
 
@@ -39,11 +39,33 @@ Resources:
     Type: AWS::EC2::Instance
     Properties:
       InstanceType: t2.nano
-      SubnetId: !Ref SubnetId
+      SubnetId: !Ref Ec2SubnetId
       KeyName: !Ref KeyName
       SecurityGroupIds:
         - !Ref CombinedValkeyWithEC2TunnelSG
       ImageId: ami-07c5ecd8498c59db5 # Replace with a valid AMI ID
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          yum update -y
+          sudo yum install gcc jemalloc-devel openssl-devel tcl tcl-devel -y 
+          wget https://github.com/valkey-io/valkey/archive/refs/tags/7.2.7.tar.gz 
+          tar xvzf 7.2.7.tar.gz 
+          cd valkey-7.2.7/ 
+          make BUILD_TLS=yes install
+
+
+  CombinedValkeyWithEC2TunnelElasticacheSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties: 
+      GroupDescription: Enable Redis/Valkey access via port 6370-6380
+      VpcId: !Ref VpcId
+      SecurityGroupIngress: 
+        - IpProtocol: tcp
+          FromPort: '6379'
+          ToPort: '6380'
+          SourceSecurityGroupId: !Ref CombinedValkeyWithEC2TunnelSG
+
 
   ServerlessCache:
     Type: AWS::ElastiCache::ServerlessCache
@@ -56,7 +78,7 @@ Resources:
         - Key: Project
           Value: valkey-test
       SecurityGroupIds:
-        - !Ref CombinedValkeyWithEC2TunnelSG
+        - !Ref CombinedValkeyWithEC2TunnelElasticacheSG
       SubnetIds: 
         - subnet-8b59ffef
         - subnet-b805fece
