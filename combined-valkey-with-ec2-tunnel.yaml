@@ -43,7 +43,7 @@ Resources:
       KeyName: !Ref KeyName
       SecurityGroupIds:
         - !Ref CombinedValkeyWithEC2TunnelSG
-      ImageId: ami-093467ec28ae4fe0 # Replace with a valid AMI ID
+      ImageId: ami-07c5ecd8498c59db5 # Replace with a valid AMI ID
 
   ServerlessCache:
     Type: AWS::ElastiCache::ServerlessCache
@@ -57,11 +57,10 @@ Resources:
           Value: valkey-test
       SecurityGroupIds:
         - !Ref CombinedValkeyWithEC2TunnelSG
-      SubnetIds:
-        - !Select [0, !GetAZs !Ref VpcId]
-        - !Select [1, !GetAZs !Ref VpcId]
+      SubnetIds: 
+        - subnet-8b59ffef
+        - subnet-b805fece
       
-
 Outputs:
   ServerlessCacheId:
     Description: ID of the serverless cache

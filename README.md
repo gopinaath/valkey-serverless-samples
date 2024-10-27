@@ -18,6 +18,7 @@ aws cloudformation create-stack ^
     ParameterKey=KeyName,ParameterValue=your-key-pair ^
     ParameterKey=MyIP,ParameterValue=your-ip/32
 
+  
   aws cloudformation create-stack \
   --stack-name valkey-ec2-stack \
   --template-body file://valkey-ec2.yaml \

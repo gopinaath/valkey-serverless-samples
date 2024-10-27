@@ -1,0 +1,4 @@
+VpcId
+KeyName
+MyIPs
+SubnetIds=
