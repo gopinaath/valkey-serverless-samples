@@ -23,7 +23,7 @@ if [[ "$STACK_EXISTS" == *"ValidationError"* && "$STACK_EXISTS" == *"does not ex
     --parameters \
       ParameterKey=VpcId,ParameterValue=$VPC_ID \
       ParameterKey=Ec2SubnetId,ParameterValue=$EC2_SUBNET_ID \
-      ParameterKey=ValkeySubnetIds,ParameterValue=subnet-b805fece\\,subnet-8b59ffef \
+      ParameterKey=ValkeySubnetIds,ParameterValue=$VALKEY_SUBNET_IDS \
       ParameterKey=KeyName,ParameterValue=mbp-valkey-ec2 \
       ParameterKey=MyIP,ParameterValue=108.185.168.226/32
 else
