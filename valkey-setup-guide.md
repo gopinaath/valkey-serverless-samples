@@ -8,39 +8,40 @@ My  setup consists of:
 1. A serverless ElastiCache running Valkey
 2. An EC2 bastion host for secure tunneling
 3. Security groups for access control
-4. Necessary networking components
 
 ## Infrastructure Components
 
 Let's break down the key components of our CloudFormation template:
 
-### Security Groups
+### EC2 and its Security Group
 
-First, we create two security groups:
-1. For the EC2 bastion host (allows SSH from my IP, obtaine using ``` curl checkip.amazonaws.com```)
-2. For the Valkey instance (allows access from the bastion host)
+First, I create  security group that allows SSH from my IP (obtain using ``` curl checkip.amazonaws.com```).  
+
 
 ```json
 "CombinedValkeyWithEC2TunnelSG": {
-  "Type": "AWS::EC2::SecurityGroup",
-  "Properties": {
-    "GroupDescription": "Enable SSH access via port 22",
-    "VpcId": { "Ref": "VpcId" },
-    "SecurityGroupIngress": [
-      {
-        "IpProtocol": "tcp",
-        "FromPort": "22",
-        "ToPort": "22",
-        "CidrIp": { "Ref": "MyIP" }
+        "Type": "AWS::EC2::SecurityGroup",
+        "Properties": {
+          "GroupDescription": "Enable SSH access via port 22",
+          "VpcId": {
+            "Ref": "VpcId"
+          },
+          "SecurityGroupIngress": [
+            {
+              "IpProtocol": "tcp",
+              "FromPort": "22",
+              "ToPort": "22",
+              "CidrIp": {
+                "Ref": "MyIP"
+              }
+            }
+          ]
+        }
       }
-    ]
-  }
-}
 ```
 
-### Bastion Host Configuration
+Second, I create a security group for serverless Elasticache Valkey.  
 
-We deploy a t4g.nano instance with the necessary software:
 
 ```json
 "CombinedValkeyWithEC2TunnelEC2Instance": {
