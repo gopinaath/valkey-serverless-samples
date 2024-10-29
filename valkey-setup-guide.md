@@ -227,16 +227,23 @@ This creates a secure tunnel with port forwarding from your local machine to the
 In a separate window, I connect to Elasticache Valkey using ```redis-cli```:
 
 ```
-$ redis-cli --tls
+% redis-cli --tls
+
+127.0.0.1:6379> set name1 "John Smith"
+OK
+127.0.0.1:6379> get name1
+"John Smith"
 
 ```
 
 ## Best Practices
 
-1. Always use a bastion host for accessing Valkey
+1. Always use a bastion host for accessing Valkey.  
 2. Open only the ports needed in the security group. 
 3. Regularly update the bastion host, or better yet - provision it only when needed and then delete it. 
 
 ## Conclusion
 
-This setup provides a secure, scalable Valkey deployment. The serverless nature of ElastiCache means you only pay for what you use, while the bastion host ensures secure access to your data store.
+This setup provides a secure, scalable Valkey deployment. The serverless nature of ElastiCache Valkey means I only pay for what I use, while the bastion host ensures secure access to my data store.
+
+If you are following these steps, remember to regularly update security group rules, monitor access patterns, and keep the bastion host updated with the latest security patches.
