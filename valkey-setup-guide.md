@@ -1,6 +1,6 @@
-# Setting up Valkey Serverless Cache with EC2 Bastion Host on AWS
+# Setting up Amazon Elasticache Serverless for Valkey and connecting from development environment
 
-Valkey is a high-performance key-value store compatible with Redis protocols. This guide walks through setting up a serverless Valkey instance on AWS ElastiCache with a secure bastion host architecture. I'll use CloudFormation to automate the entire infrastructure deployment with parameterized VPC-Ids and Subnet Ids.  At the end of this exercise, AWS Elasticache Valkey can be accessed from the developer's local desktop.  
+Valkey is a high-performance key-value store compatible with Redis protocols. This guide walks through setting up an Amazon Elasticache Serverless for Valkey and connecting to it from developer's desktop/laptop. I'll use CloudFormation to automate the entire infrastructure deployment with parameterized Vpc-Ids and Subnet Ids.  At the end of this exercise, AWS Elasticache Valkey can be accessed from the developer's local desktop.  
 
 ## Architecture Overview
 
@@ -107,7 +107,7 @@ Now that previous two steps are completed, I create  security group that allows 
 
 ```
 
-Finally, I deploy Valkey as a serverless ElastiCache.  I specify 2 subnets for the serverless Elasticache (one can specify up to 3 subnets).  
+Finally, I deploy ElastiCache Serverless for Valkey.  I specify 2 subnets for the serverless Elasticache (one can specify up to 3 subnets).  
 
 ```json
 "ServerlessCache": {
@@ -144,7 +144,7 @@ Finally, I deploy Valkey as a serverless ElastiCache.  I specify 2 subnets for t
       }
 ```
 
-I specify ouptuts from AWS CloudFormation:
+I specify ouptuts from AWS CloudFormation, so that they can be used from my shell later:
 
 ```json
     "Outputs": {
@@ -201,7 +201,7 @@ Finally I run the CloudFormation template at the CLI.  One can also do the same 
 The parameters required for the CloudFormation CLI can be passed using command line parameters:
 
 ```shell
-  aws cloudformation create-stack \
+  % aws cloudformation create-stack \
     --stack-name $STACK_NAME \
     --template-body file://combined-valkey-with-ec2-tunnel.json \
     --parameters \
@@ -216,10 +216,10 @@ The parameters required for the CloudFormation CLI can be passed using command l
 
 ## Accessing Valkey
 
-After deployment, fro my laptop, I set up SSH tunnel:
+I set up SSH tunnel from my laptop:
 
 ```bash
-ssh -i ${KeyName}.pem -L 6379:${ServerlessCache.Endpoint.Address}:6379 ec2-user@${EC2.PublicIp}
+% ssh -i ${KeyName}.pem -L 6379:${ServerlessCache.Endpoint.Address}:6379 ec2-user@${EC2.PublicIp}
 ```
 
 This creates a secure tunnel with port forwarding from my local machine to   Elasticache serverless Valkey through the bastion host.
@@ -236,14 +236,8 @@ OK
 
 ```
 
-### Best Practices
-
-1. Always use a bastion host for accessing Valkey.  
-2. Open only the ports needed in the security group. 
-3. Regularly update the bastion host, or better yet - provision it only when needed and then delete it. 
-
 ## Conclusion
 
-This setup provides a secure, scalable Valkey deployment. The serverless nature of ElastiCache Valkey means I only pay for what I use, while the bastion host ensures secure access to my data store.
+This setup provides a secure, scalable Valkey deployment. The serverless nature of ElastiCache Valkey means I only pay for what I use, while the EC2 instance ensures secure access to my data store from my laptop.
 
 If you are following these steps, remember to regularly update security group rules, monitor access patterns, and keep the bastion host updated with the latest security patches.
