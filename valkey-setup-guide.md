@@ -97,11 +97,10 @@ This creates a secure tunnel from your local machine to the Valkey instance thro
 
 ## Best Practices
 
-1. Always use a bastion host for accessing Valkey in production
-2. Keep the security group rules minimal
-3. Regularly update the bastion host
-4. Use AWS Systems Manager Session Manager for even more secure access
+1. Always use a bastion host for accessing Valkey
+2. Open only the ports needed in the security group. 
+3. Regularly update the bastion host, or better yet - provision it only when needed and then delete it. 
 
 ## Conclusion
 
-This setup provides a secure, scalable Valkey deployment that's production-ready. The serverless nature of ElastiCache means you only pay for what you use, while the bastion host ensures secure access to your data store.
+This setup provides a secure, scalable Valkey deployment. The serverless nature of ElastiCache means you only pay for what you use, while the bastion host ensures secure access to your data store.
