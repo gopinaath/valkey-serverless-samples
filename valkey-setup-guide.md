@@ -216,15 +216,15 @@ The parameters required for the CloudFormation CLI can be passed using command l
 
 ## Accessing Valkey
 
-After deployment, use the output SSH tunnel command to connect:
+After deployment, fro my laptop, I set up SSH tunnel:
 
 ```bash
 ssh -i ${KeyName}.pem -L 6379:${ServerlessCache.Endpoint.Address}:6379 ec2-user@${EC2.PublicIp}
 ```
 
-This creates a secure tunnel with port forwarding from your local machine to the Valkey instance through the bastion host.
+This creates a secure tunnel with port forwarding from my local machine to   Elasticache serverless Valkey through the bastion host.
 
-In a separate window, I connect to Elasticache Valkey using ```redis-cli```:
+In a separate shell window, I connect to Elasticache Valkey using ```redis-cli```:
 
 ```
 % redis-cli --tls
@@ -236,7 +236,7 @@ OK
 
 ```
 
-## Best Practices
+### Best Practices
 
 1. Always use a bastion host for accessing Valkey.  
 2. Open only the ports needed in the security group. 
