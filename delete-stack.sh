@@ -23,7 +23,7 @@ while true; do
     echo "Stack deletion failed for $STACK_NAME."
     exit 1
   elif [[ "$STACK_STATUS" == *"ValidationError"* && "$STACK_STATUS" == *"does not exist"* ]]; then
-    echo "Stack $STACK_NAME does not exist."
+    echo "Stack $STACK_NAME deleted (or never created)."
     break
   else
     echo "Current stack status: $STACK_STATUS. Waiting..."
