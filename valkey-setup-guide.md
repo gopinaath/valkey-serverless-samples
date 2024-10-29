@@ -1,6 +1,6 @@
 # Setting up Valkey Serverless Cache with EC2 Bastion Host on AWS
 
-Valkey is a high-performance key-value store compatible with Redis protocols. This guide walks through setting up a serverless Valkey instance on AWS ElastiCache with a secure bastion host architecture. I'll use CloudFormation to automate the entire infrastructure deployment.
+Valkey is a high-performance key-value store compatible with Redis protocols. This guide walks through setting up a serverless Valkey instance on AWS ElastiCache with a secure bastion host architecture. I'll use CloudFormation to automate the entire infrastructure deployment.  At the end of this exercise, AWS Elasticache Valkey can be accessed from the developer's local desktop.  
 
 ## Architecture Overview
 
@@ -40,17 +40,28 @@ First, I create  security group that allows SSH from my IP (obtain using ``` cur
       }
 ```
 
-Second, I create a security group for serverless Elasticache Valkey.  
+Second, I create the EC2 instance and associate it with the security group I created in the first step.  
 
 
 ```json
-"CombinedValkeyWithEC2TunnelEC2Instance": {
-  "Type": "AWS::EC2::Instance",
-  "Properties": {
-    "InstanceType": "t4g.nano",
-    "ImageId": "ami-07dcfc8123b5479a8",
-    "UserData": {
-      "Fn::Base64": {
+      "CombinedValkeyWithEC2TunnelEC2Instance": {
+        "Type": "AWS::EC2::Instance",
+        "Properties": {
+          "InstanceType": "t4g.nano",
+          "SubnetId": {
+            "Ref": "Ec2SubnetId"
+          },
+          "KeyName": {
+            "Ref": "KeyName"
+          },
+          "SecurityGroupIds": [
+            {
+              "Ref": "CombinedValkeyWithEC2TunnelSG"
+            }
+          ],
+          "ImageId": "ami-07dcfc8123b5479a8",
+          "UserData": {
+            "Fn::Base64": {
                 "Fn::Join": [
                   "",
                   [
@@ -64,12 +75,12 @@ Second, I create a security group for serverless Elasticache Valkey.
                   ]
                 ]
               }
-    }
-  }
-}
+          }
+        }
+      }
 ```
 
-### Serverless Valkey Configuration
+### Serverless Valkey Security Group.
 
 The Valkey instance is deployed as a serverless ElastiCache:
 
