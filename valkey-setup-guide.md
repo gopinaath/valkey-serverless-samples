@@ -1,10 +1,10 @@
 # Setting up Valkey Serverless Cache with EC2 Bastion Host on AWS
 
-Valkey is a high-performance key-value store compatible with Redis protocols. In this guide, we'll set up a serverless Valkey instance on AWS ElastiCache with a bastion host for secure access. We'll use CloudFormation to automate the entire infrastructure deployment.
+Valkey is a high-performance key-value store compatible with Redis protocols. This guide walks through setting up a serverless Valkey instance on AWS ElastiCache with a secure bastion host architecture. I'll use CloudFormation to automate the entire infrastructure deployment.
 
 ## Architecture Overview
 
-Our setup consists of:
+My  setup consists of:
 1. A serverless ElastiCache running Valkey
 2. An EC2 bastion host for secure tunneling
 3. Security groups for access control
@@ -17,7 +17,7 @@ Let's break down the key components of our CloudFormation template:
 ### Security Groups
 
 First, we create two security groups:
-1. For the EC2 bastion host (allows SSH from your IP)
+1. For the EC2 bastion host (allows SSH from my IP, obtaine using ``` curl checkip.amazonaws.com```)
 2. For the Valkey instance (allows access from the bastion host)
 
 ```json
@@ -50,8 +50,19 @@ We deploy a t4g.nano instance with the necessary software:
     "ImageId": "ami-07dcfc8123b5479a8",
     "UserData": {
       "Fn::Base64": {
-        "Fn::Sub": "#!/bin/bash\nyum update -y\nsudo yum install gcc jemalloc-devel openssl-devel tcl tcl-devel -y\nwget https://github.com/valkey-io/valkey/archive/refs/tags/7.2.7.tar.gz\ntar xvzf 7.2.7.tar.gz\ncd valkey-7.2.7/\nmake BUILD_TLS=yes install"
-      }
+                "Fn::Join": [
+                  "",
+                  [
+                    "#!/bin/bash\n",
+                    "yum update -y\n",
+                    "sudo yum install gcc jemalloc-devel openssl-devel tcl tcl-devel -y\n",
+                    "wget https://github.com/valkey-io/valkey/archive/refs/tags/7.2.7.tar.gz\n",
+                    "tar xvzf 7.2.7.tar.gz\n",
+                    "cd valkey-7.2.7/\n",
+                    "make BUILD_TLS=yes install\n"
+                  ]
+                ]
+              }
     }
   }
 }

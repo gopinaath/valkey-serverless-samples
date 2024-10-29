@@ -25,7 +25,7 @@ if [[ "$STACK_EXISTS" == *"ValidationError"* && "$STACK_EXISTS" == *"does not ex
       ParameterKey=Ec2SubnetId,ParameterValue=$EC2_SUBNET_ID \
       ParameterKey=ValkeySubnetIds,ParameterValue=$VALKEY_SUBNET_IDS \
       ParameterKey=KeyName,ParameterValue=mbp-valkey-ec2 \
-      ParameterKey=MyIP,ParameterValue=108.185.168.226/32
+      ParameterKey=MyIP,ParameterValue=XXX.XXX.XXX.XXX/32
 else
   echo "Stack $STACK_NAME exists. Updating stack..."
   aws cloudformation update-stack \
@@ -36,5 +36,5 @@ else
       ParameterKey=Ec2SubnetId,ParameterValue=$EC2_SUBNET_ID \
       ParameterKey=ValkeySubnetIds,ParameterValue=$VALKEY_SUBNET_IDS \
       ParameterKey=KeyName,ParameterValue=mbp-valkey-ec2 \
-      ParameterKey=MyIP,ParameterValue=108.185.168.226/32
+      ParameterKey=MyIP,ParameterValue=XXX.XXX.XXX.XXX/32
 fi
