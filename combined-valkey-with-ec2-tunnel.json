@@ -66,8 +66,19 @@
           "ImageId": "ami-07dcfc8123b5479a8",
           "UserData": {
             "Fn::Base64": {
-              "Fn::Sub": "#!/bin/bash\nyum update -y\nsudo yum install gcc jemalloc-devel openssl-devel tcl tcl-devel -y\nwget https://github.com/valkey-io/valkey/archive/refs/tags/7.2.7.tar.gz\ntar xvzf 7.2.7.tar.gz\ncd valkey-7.2.7/\nmake BUILD_TLS=yes install"
-            }
+                "Fn::Join": [
+                  "",
+                  [
+                    "#!/bin/bash\n",
+                    "yum update -y\n",
+                    "sudo yum install gcc jemalloc-devel openssl-devel tcl tcl-devel -y\n",
+                    "wget https://github.com/valkey-io/valkey/archive/refs/tags/7.2.7.tar.gz\n",
+                    "tar xvzf 7.2.7.tar.gz\n",
+                    "cd valkey-7.2.7/\n",
+                    "make BUILD_TLS=yes install\n"
+                  ]
+                ]
+              }
           }
         }
       },
