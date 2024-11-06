@@ -1,42 +1,17 @@
 # valkey-serverless-samples
 
+.env file
 
+```
+STACK_NAME=valkey-ec2-stack
+VPC_ID=vpc-12345678
+EC2_SUBNET_ID=subnet-12345678
+VALKEY_SUBNET_IDS=\"subnet-12345678,subnet-87654321\"
+EC2_KEY_NAME=my_ec2_key
+MY_IP=100.100.100.100/32
 
 ```
 
-aws cloudformation create-stack  --stack-name serverless-valkey-stack  --template-body file://serverless-valkey.yaml
 
-  ```
 
-```
-
-aws cloudformation create-stack ^
-  --stack-name valkey-ec2-stack ^
-  --template-body file://valkey-ec2.yaml ^
-  --parameters ^
-    ParameterKey=VpcId,ParameterValue=vpc-xxxxxxxx ^
-    ParameterKey=SubnetId,ParameterValue=subnet-xxxxxxxx ^
-    ParameterKey=KeyName,ParameterValue=your-key-pair ^
-    ParameterKey=MyIP,ParameterValue=your-ip/32
-
-  
-  aws cloudformation create-stack \
-  --stack-name valkey-ec2-stack \
-  --template-body file://valkey-ec2.yaml \
-  --parameters \
-    ParameterKey=VpcId,ParameterValue=vpc-xxxxxxxx \
-    ParameterKey=SubnetId,ParameterValue=subnet-xxxxxxxx \
-    ParameterKey=KeyName,ParameterValue=your-key-pair \
-    ParameterKey=MyIP,ParameterValue=your-ip/32
-
-```
-
-```
-aws cloudformation delete-stack  --stack-name serverless-valkey-stack
-
-```
-
-```
-aws cloudformation delete-stack  --stack-name valkey-ec2-stack
-```
-
+./create-or-update-stack.sh valkey-ec2-stack vpc-12345678 subnet-12345678 \"subnet-12345678,subnet-87654321\" my_ec2_key 100.100.100.100/32
